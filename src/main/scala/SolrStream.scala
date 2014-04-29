@@ -15,10 +15,11 @@ object SolrStream {
   final case class Wt(value: String) extends QueryParameter
 
   object QueryParameter {
+    def kv(k: String)(v: String): String = k + "=" + v
     def toURLQuery(qp: QueryParameter): String =
       qp match {
-        case Q(v) => "q" + "=" + v
-        case Wt(v) => "wt" + "=" + v
+        case Q(v) => kv("q")(v)
+        case Wt(v) => kv("wt")(v)
       }
   }
   
