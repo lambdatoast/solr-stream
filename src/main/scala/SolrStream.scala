@@ -6,26 +6,18 @@ import scala.io.Source
 
 object SolrStream {
 
-  /** [[http://wiki.apache.org/solr/CommonQueryParameters CommonQueryParameters]]
+  /** 
+    * [[http://wiki.apache.org/solr/CommonQueryParameters CommonQueryParameters]]
+    * [[http://wiki.apache.org/solr/CoreQueryParameters CoreQueryParameters]]
     */
-  sealed trait CommonQueryParameter
-  final case class Q(value: String) extends CommonQueryParameter
+  sealed trait QueryParameter
+  final case class Q(value: String) extends QueryParameter
+  final case class Wt(value: String) extends QueryParameter
 
-  object CommonQueryParam {
-    def toURLQuery(qp: CommonQueryParameter): String =
+  object QueryParameter {
+    def toURLQuery(qp: QueryParameter): String =
       qp match {
         case Q(v) => "q" + "=" + v
-      }
-  }
-
-  /** [[http://wiki.apache.org/solr/CoreQueryParameters CommonQueryParameters]]
-    */
-  sealed trait CoreQueryParameter
-  final case class Wt(value: String) extends CoreQueryParameter
-
-  object CoreQueryParam {
-    def toURLQuery(qp: CoreQueryParameter): String =
-      qp match {
         case Wt(v) => "wt" + "=" + v
       }
   }
@@ -33,15 +25,14 @@ object SolrStream {
   /** Solr query definition.
     * [[http://wiki.apache.org/solr/QueryParametersIndex Query parameters docs]]
     */
-  case class Query(commonParams: Set[CommonQueryParameter], coreParams: Set[CoreQueryParameter])
+  case class Query(params: Set[QueryParameter])
 
   def queryToString(q: Query): String = 
-    q.commonParams.map(CommonQueryParam.toURLQuery(_)).mkString("&") + 
-    "&" + q.coreParams.map(CoreQueryParam.toURLQuery(_)).mkString("&")
+    q.params.map(QueryParameter.toURLQuery(_)).mkString("&")
   
   def query(url: String)(q: Query): Process[Task, String] =
     io.linesR(Source.fromURL(url + "?" + queryToString(q), "utf-8"))
 
-  def example = query("http://localhost:8983/solr/collection1/select")(Query(Set(Q("*:*")), Set(Wt("json"))))
+  def example = query("http://localhost:8983/solr/collection1/select")(Query(Set(Q("*:*"), Wt("json"))))
 
 }
