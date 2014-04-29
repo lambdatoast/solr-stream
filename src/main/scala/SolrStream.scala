@@ -3,6 +3,7 @@ import scalaz.stream.io
 import scalaz.stream.Process
 import scalaz.concurrent.Task
 import scala.io.Source
+import java.net.URLEncoder
 
 object SolrStream {
 
@@ -15,7 +16,7 @@ object SolrStream {
   final case class Wt(value: String) extends QueryParameter
 
   object QueryParameter {
-    def kv(k: String)(v: String): String = k + "=" + v
+    def kv(k: String)(v: String): String = k + "=" + URLEncoder.encode(v, "utf-8")
     def toURLQuery(qp: QueryParameter): String =
       qp match {
         case Q(v) => kv("q")(v)
