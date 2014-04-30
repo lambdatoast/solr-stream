@@ -10,3 +10,5 @@ resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 
 libraryDependencies += "org.scalaz.stream" %% "scalaz-stream" % "0.4.1"
 
+libraryDependencies += "org.apache.httpcomponents" % "httpclient" % "4.3.3"
+
