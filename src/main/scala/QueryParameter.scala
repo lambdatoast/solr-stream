@@ -21,7 +21,7 @@ object QueryParameter {
 }
 
 /**
- * [[ http://lucene.apache.org/core/2_9_4/queryparsersyntax.html queryparsersyntax]]
+ * [[http://lucene.apache.org/core/2_9_4/queryparsersyntax.html queryparsersyntax]]
  */
 object QueryParameterCombinators {
   type FieldTermPair = (String, String)
