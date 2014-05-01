@@ -19,3 +19,18 @@ object QueryParameter {
       case Fl(vs) => kv("fl")(vs.mkString(","))
     }
 }
+
+/**
+ * [[ http://lucene.apache.org/core/2_9_4/queryparsersyntax.html queryparsersyntax]]
+ */
+object QueryParameterCombinators {
+  type FieldTermPair = (String, String)
+  def joinWithOp(xs: Set[FieldTermPair])(op: String): String =
+    xs.map(kv => kv._1 + ":" + kv._2).mkString(" " + op + " ")
+
+  def and(xs: Set[FieldTermPair]): String =
+    joinWithOp(xs)("AND")
+
+  def or(xs: Set[FieldTermPair]): String =
+    joinWithOp(xs)("OR")
+}
