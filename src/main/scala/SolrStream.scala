@@ -4,7 +4,7 @@ object SolrStream {
   import Query._
 
   object Examples {
-    def search = query("http://localhost:8983/solr/collection1/select")(Query(Set(Q("*:*"), Wt("json"))))
+    def search = query("http://localhost:8983/solr/collection1/select")(Query(List(Q("*:*"), Wt("json"))))
     def update = {
       val testDocsJson = 
         """

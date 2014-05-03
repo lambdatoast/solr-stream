@@ -7,7 +7,7 @@ import scala.io.Source
 /** Solr query definition.
   * [[http://wiki.apache.org/solr/QueryParametersIndex Query parameters docs]]
   */
-case class Query(params: Set[QueryParameter])
+case class Query(params: List[QueryParameter])
 
 object Query {
   def queryToString(q: Query): String = 
